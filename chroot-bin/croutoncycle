@@ -59,6 +59,8 @@ getname() {
 # Only let one instance run at a time to avoid nasty race conditions
 mkdir -m 775 -p "$CROUTONLOCKDIR"
 exec 3>"$CROUTONLOCKDIR/cycle"
+chmod -Rf g+rwX "$CROUTONLOCKDIR" || true
+chgrp -Rf crouton "$CROUTONLOCKDIR" || true
 flock 3
 
 # set display command from extension

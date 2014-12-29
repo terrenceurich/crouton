@@ -91,6 +91,8 @@ if [ "$XMETHOD" != "xiwi" ]; then
     # Launch xbindkeys for the Chromium OS X server if it isn't running
     mkdir -m 775 -p /tmp/crouton-lock
     {
+        chmod -Rf g+rwX '/tmp/crouton-lock' || true
+        chgrp -Rf crouton '/tmp/crouton-lock' || true
         # Only let one instance *really* run at a time
         flock 3
         XMETHOD='' host-x11 xbindkeys -n -fg /etc/crouton/xbindkeysrc.scm &
