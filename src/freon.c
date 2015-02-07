@@ -63,13 +63,14 @@ int ioctl(int fd, unsigned long int request, ...) {
         if ((request == VT_RELDISP && (long)data == 1) ||
             (request == VT_ACTIVATE && (long)data == 0)) {
             fprintf(stderr, "Telling Chromium OS to regain control\n");
-            system("host-dbus dbus-send --system --dest=org.chromium.LibCrosService --type=method_call /org/chromium/LibCrosService org.chromium.LibCrosServiceInterface.TakeDisplayOwnership");
+            ret = system("host-dbus dbus-send --system --dest=org.chromium.LibCrosService --type=method_call --print-reply /org/chromium/LibCrosService org.chromium.LibCrosServiceInterface.TakeDisplayOwnership");
         } else if ((request == VT_RELDISP && (long)data == 2) ||
                    (request == VT_ACTIVATE && (long)data == 7)) {
             fprintf(stderr, "Telling Chromium OS to drop control\n");
-            system("host-dbus dbus-send --system --dest=org.chromium.LibCrosService --type=method_call /org/chromium/LibCrosService org.chromium.LibCrosServiceInterface.ReleaseDisplayOwnership");
+            ret = system("host-dbus dbus-send --system --dest=org.chromium.LibCrosService --type=method_call --print-reply /org/chromium/LibCrosService org.chromium.LibCrosServiceInterface.ReleaseDisplayOwnership");
+        } else {
+            ret = 0;
         }
-        ret = 0;
     } else {
         if (request == EVIOCGRAB) {
             fprintf(stderr, "ioctl GRAB %d %lx %p\n", fd, request, data);
