@@ -182,12 +182,12 @@ fixkeyboardmode() {
 # $3+: any package dependencies other than gcc and libc-dev, crouton-style.
 compile() {
     local out="/usr/local/bin/crouton$1" linker="$2" cflags='-xc -Os'
-    shift 2
-    if [ "$1" = 'so' ]; then
+    if [ "$3" = 'so' ]; then
         out="/usr/local/lib/crouton$1.so"
         cflags="$cflags -shared -fPIC"
         shift 1
     fi
+    shift 2
     echo "Installing dependencies for $out..." 1>&2
     local pkgs="gcc libc6-dev $*"
     install --minimal --asdeps $pkgs </dev/null
