@@ -320,6 +320,12 @@ else
         sudo -n chvt 2
         sudo -n chvt "$dest"
     else
+        if [ "$freonowner" = 0 ]; then
+            # Add a sleep when switching from Chromium OS so that the user can
+            # release their key press.
+            # FIXME: find a way to release all active keypresses when switching
+            sleep .2
+        fi
         dest="/tmp/.X${destdisp#:}-lock"
         if [ -f "$dest" ]; then
             # Trigger the target before releasing the current owner
