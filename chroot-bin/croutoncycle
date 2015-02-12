@@ -285,7 +285,7 @@ if [ "${destdisp#:}" = "$destdisp" ]; then
             sleep .1
         fi
         croutonwmtools raise "${destdisp%"*"}"
-    elif [ "$freonowner" != 0 ]; then
+    elif [ "${freonowner:-0}" != 0 ]; then
         kill -USR1 "$freonowner"
     fi
 
@@ -301,7 +301,7 @@ else
         if [ -z "$freonowner" -a "$tty" != 'tty1' ]; then
             sudo -n chvt 1
             sleep .1
-        elif [ "$freonowner" != 0 ]; then
+        elif [ "${freonowner:-0}" != 0 ]; then
             kill -USR1 "$freonowner"
         fi
         STATUS="`echo -n "X${destdisp}" | websocketcommand`"
@@ -331,7 +331,7 @@ else
             # Trigger the target before releasing the current owner
             kill -USR1 `cat /tmp/.X${destdisp#:}-lock`
         fi
-        if [ "$freonowner" != 0 ]; then
+        if [ "${freonowner:-0}" != 0 ]; then
             kill -USR1 "$freonowner"
         fi
     fi
