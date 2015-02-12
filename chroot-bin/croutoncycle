@@ -310,6 +310,9 @@ else
         elif [ "${freonowner:-0}" != 0 ]; then
             kill -USR1 "$freonowner"
         fi
+        if [ -z "$freonowner" ]; then
+            host-x11 croutonwmtools raise "$aurawin"
+        fi
         STATUS="`echo -n "X${destdisp}" | websocketcommand`"
         if [ "$STATUS" != 'XOK' ]; then
             error 1 "${STATUS#?}"
