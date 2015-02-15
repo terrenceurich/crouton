@@ -656,11 +656,16 @@ if [ ! "$NOLOGIN" = 1 ] && grep -q '^root:' "$passwd" 2>/dev/null; then
             mkfifo "$CROUTONLOCKDIR/frecon"
             chmod 622 "$CROUTONLOCKDIR/frecon"
         fi
-        chrootcmd "(exec >/dev/null 2>&1 <'$CROUTONLOCKDIR/frecon'
-            while read _; do
-                pkill '^frecon\$' || true
+        chrootcmd "(exec >/dev/null 2>&1 </dev/null
+            while read cmd <'$CROUTONLOCKDIR/frecon'; do
+                if [ \"\$cmd\" = $$ ]; then
+                    break
+                elif [ -z \"\$cmd\" ]; then
+                    pkill '^frecon\$' || true
+                fi
             done
         ) &"
+        addtrap "(echo $$ >> '$CROUTONLOCKDIR/frecon') & :"
     fi
 fi
 
