@@ -21,7 +21,8 @@
 #include <linux/input.h>
 #include <linux/vt.h>
 
-#define DISPLAY_LOCK_FILE "/tmp/crouton-lock/display"
+#define LOCK_FILE_DIR "/tmp/crouton-lock"
+#define DISPLAY_LOCK_FILE LOCK_FILE_DIR "/display"
 #define FREON_DBUS_METHOD_CALL(function) \
     system("host-dbus dbus-send --system --dest=org.chromium.LibCrosService " \
            "--type=method_call --print-reply /org/chromium/LibCrosService " \
@@ -51,6 +52,7 @@ static int set_display_lock(unsigned int pid) {
             ERROR("No display lock to release.\n");
             return 0;
         }
+        (void) mkdir(LOCK_FILE_DIR, 0777);
         lockfd = orig_open(DISPLAY_LOCK_FILE, O_CREAT | O_WRONLY, 0666);
         if (lockfd == -1) {
             ERROR("Unable to open display lock file.\n");
