@@ -1,0 +1,18 @@
+#!/bin/sh -e
+# Copyright (c) 2014 The crouton Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+REQUIRES='gtk-extra'
+DESCRIPTION='Installs the Elementary desktop environment. (Approx. 1200MB)'
+HOSTBIN='startelementary'
+CHROOTBIN='crouton-noroot startelementary'
+. "${TARGETSDIR:="$PWD"}/common"
+
+### Append to prepare.sh:
+apt-add-repository ppa:elementary-os/stable
+apt-get update
+install python-software-properties, elementary-desktop, gtk2-engines-pixbuf 
+
+TIPS="$TIPS
+You can start Elementary via the startelementary host command: sudo startelementary
+"
